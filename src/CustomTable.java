@@ -26,4 +26,10 @@ public class CustomTable extends AbstractTableModel {
         data[row][col] = value;
         fireTableCellUpdated(row, col);
     }
+
+    public void removeAllRows() {
+        for (int i = 0; i < data.length; i++) {
+            data[i] = null;
+        }
+    }
 }
