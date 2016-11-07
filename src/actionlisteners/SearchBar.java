@@ -8,7 +8,7 @@ import java.awt.event.MouseEvent;
 
 public class SearchBar extends MouseAdapter implements ActionListener  {
 
-    private CP table = new resources.CP();
+    //public ControlPanelUI CPUI = new ControlPanelUI();
 
     public void mouseEntered(MouseEvent e) {
         JTextField searchBar = (JTextField) e.getSource();
@@ -31,7 +31,7 @@ public class SearchBar extends MouseAdapter implements ActionListener  {
 
 
         if (!searchBar.getText().equals("")) {
-            new Go(table).actionPerformed(e);
+            //new Go().actionPerformed(e);
         }
     }
 }

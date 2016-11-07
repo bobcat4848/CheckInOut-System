@@ -6,17 +6,16 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class CP {
+public class ControlPanelUI {
 
-    private JTable tableOfUsers;
+    public static JTable tableOfUsers;
     private Container contentPane;
     private ArrayList<Account> accounts = new ArrayList<>();
     private String[] columnNames = {"First Name", "Last Name", "Books Out"};
     private Object[][] data;
 
-    public CP(Container contentPane) {
-        this.contentPane = contentPane;
-    }
+    public ControlPanelUI(Container contentPane) { this.contentPane = contentPane; }
+    public ControlPanelUI() {  }
 
     public void renderTable() {
         addDebugAccounts();
@@ -138,9 +137,5 @@ public class CP {
         right.setOpaque(false);
         bufferRegion.setOpaque(false);
         contentPane.add(right);
-    }
-
-    public JTable getTable() {
-        return tableOfUsers;
     }
 }

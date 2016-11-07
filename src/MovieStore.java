@@ -7,11 +7,6 @@
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 public class MovieStore extends JFrame {
 
@@ -33,7 +28,7 @@ public class MovieStore extends JFrame {
         container.setLayout(new BorderLayout());
         container.setBackground(Color.DARK_GRAY);
 
-        CP controlPanel = new CP(container);
+        ControlPanelUI controlPanel = new ControlPanelUI(container);
         controlPanel.createLeftCP();
         controlPanel.createRightCP();
     }
