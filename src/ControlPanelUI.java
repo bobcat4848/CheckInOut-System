@@ -12,22 +12,19 @@ public class ControlPanelUI {
     private Container contentPane;
     private ArrayList<Account> accounts = new ArrayList<>();
     private String[] columnNames = {"First Name", "Last Name", "Books Out"};
-    private Object[][] data;
+    private HashMap<Integer, Object[]> newData = new HashMap<Integer, Object[]>();
 
     public ControlPanelUI(Container contentPane) { this.contentPane = contentPane; }
-    public ControlPanelUI() {  }
 
-    public void renderTable() {
+    public void setupTable() {
         addDebugAccounts();
 
-        data = new Object[accounts.size()][3];
-        tableOfUsers = new JTable(new CustomTable(data, columnNames));
-        for (int i = 0; i < data.length; i++) {
-            for (int r = 0; r < data[i].length; r++) {
-                data[i][0] = accounts.get(i).getFirstName();
-                data[i][1] = accounts.get(i).getLastName();
-                data[i][2] = accounts.get(i).getCheckedOutBooks();
-            }
+        tableOfUsers = new JTable(new CustomTable(newData, columnNames));
+        for (int i = 0; i < newData.size(); i++) {
+            Object[] accountData = new Object[] { accounts.get(i).getFirstName(),
+                    accounts.get(i).getLastName(),
+                    accounts.get(i).getCheckedOutBooks()};
+            newData.put(i, accountData);
         }
     }
 
@@ -106,6 +103,8 @@ public class ControlPanelUI {
         // bufferRegion.setBackground(Color.black); // Used to debug regions
         bufferRegion.setLayout(new GridBagLayout());
         GridBagConstraints totalRestraint = new GridBagConstraints();
+        setupTable();
+
 
         totalRestraint.gridx = 0;
         totalRestraint.gridy = 0;
@@ -113,19 +112,18 @@ public class ControlPanelUI {
         totalRestraint.ipadx = 250;
         totalRestraint.anchor = GridBagConstraints.FIRST_LINE_START;
         JTextField searchTable = new JTextField("SEARCH USERS");
-        searchTable.addMouseListener(new SearchBar());
+        searchTable.addMouseListener(new SearchBar(tableOfUsers));
         bufferRegion.add(searchTable, totalRestraint);
 
         totalRestraint.gridy = 0;
         totalRestraint.ipadx = 10;
         totalRestraint.anchor = GridBagConstraints.FIRST_LINE_END;
         JButton goButton = new JButton("GO");
-        goButton.addActionListener(new Go(tableOfUsers));
+        goButton.addActionListener(new Go(tableOfUsers, searchTable));
         bufferRegion.add(goButton, totalRestraint);
 
         totalRestraint.gridx = 0;
         totalRestraint.gridy = 1;
-        renderTable();
         JScrollPane tablePane = new JScrollPane();
         tableOfUsers.getTableHeader().setReorderingAllowed(false);
         tableOfUsers.getTableHeader().setResizingAllowed(false);
@@ -138,4 +136,33 @@ public class ControlPanelUI {
         bufferRegion.setOpaque(false);
         contentPane.add(right);
     }
+
+    /*
+    public class SearchBar extends MouseAdapter implements ActionListener {
+
+        public void mouseEntered(MouseEvent e) {
+            JTextField searchBar = (JTextField) e.getSource();
+
+            if (searchBar.getText().equalsIgnoreCase("SEARCH USERS")) {
+                searchBar.setText("");
+            }
+        }
+
+        public void mouseExited(MouseEvent e) {
+            JTextField searchBar = (JTextField) e.getSource();
+
+            if (searchBar.getText().equals("")) {
+                searchBar.setText("SEARCH USERS");
+            }
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            JTextField searchBar = (JTextField) e.getSource();
+
+
+            if (!searchBar.getText().equals("")) {
+                new Go(tableOfUsers).actionPerformed(e);
+            }
+        }
+    }*/
 }

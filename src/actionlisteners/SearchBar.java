@@ -8,10 +8,15 @@ import java.awt.event.MouseEvent;
 
 public class SearchBar extends MouseAdapter implements ActionListener  {
 
-    //public ControlPanelUI CPUI = new ControlPanelUI();
+    private JTable table;
+    private JTextField searchBar;
+
+    public SearchBar(JTable table) {
+        this.table = table;
+    }
 
     public void mouseEntered(MouseEvent e) {
-        JTextField searchBar = (JTextField) e.getSource();
+        searchBar = (JTextField) e.getSource();
 
         if (searchBar.getText().equalsIgnoreCase("SEARCH USERS")) {
             searchBar.setText("");
@@ -19,7 +24,7 @@ public class SearchBar extends MouseAdapter implements ActionListener  {
     }
 
     public void mouseExited(MouseEvent e) {
-        JTextField searchBar = (JTextField) e.getSource();
+        searchBar = (JTextField) e.getSource();
 
         if (searchBar.getText().equals("")) {
             searchBar.setText("SEARCH USERS");
@@ -27,11 +32,11 @@ public class SearchBar extends MouseAdapter implements ActionListener  {
     }
 
     public void actionPerformed(ActionEvent e) {
-        JTextField searchBar = (JTextField) e.getSource();
+        searchBar = (JTextField) e.getSource();
 
 
         if (!searchBar.getText().equals("")) {
-            //new Go().actionPerformed(e);
+            new Go(table, searchBar).actionPerformed(e);
         }
     }
 }

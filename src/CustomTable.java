@@ -1,35 +1,37 @@
 import javax.swing.table.AbstractTableModel;
+import java.util.HashMap;
 
 public class CustomTable extends AbstractTableModel {
     private String[] columnNames;
-    private Object[][] data;
+    private HashMap<Integer, Object[]> newData;
 
-    // Create a custom table that isn't editable by the user by clicking
-    public CustomTable(Object[][] data, String[] columnNames) {
+    public CustomTable(HashMap<Integer, Object[]> newData, String[] columnNames) {
+        this.newData = newData;
         this.columnNames = columnNames;
-        this.data = data;
     }
 
     public int getColumnCount() { return columnNames.length; }
 
-    public int getRowCount() { return data.length; }
+    public int getRowCount() { return newData.size(); }
 
     public String getColumnName(int col) {
         return columnNames[col];
     }
 
     public Object getValueAt(int row, int col) {
-        return data[row][col];
+        Object[] rowData = newData.get(row);
+        return rowData[col];
     }
 
     public void setValueAt(Object value, int row, int col) {
-        data[row][col] = value;
+        Object[] rowData = newData.get(row);
+        rowData[col] = value;
+
         fireTableCellUpdated(row, col);
     }
 
-    public void removeAllRows() {
-        for (int i = 0; i < data.length; i++) {
-            data[i] = null;
-        }
+    public void removeRow(int row) {
+        newData.remove(row);
+        fireTableRowsDeleted(row, row);
     }
 }
