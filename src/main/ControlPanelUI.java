@@ -1,38 +1,45 @@
-import actionlisteners.*;
+package main;
+
+import main.actionlisteners.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class ControlPanelUI {
 
-    public static JTable tableOfUsers;
+    private JTable tableOfUsers;
+    private JFrame frame;
     private Container contentPane;
     private ArrayList<Account> accounts = new ArrayList<>();
     private String[] columnNames = {"First Name", "Last Name", "Books Out"};
-    private HashMap<Integer, Object[]> newData = new HashMap<Integer, Object[]>();
+    private Object[][] data;
 
-    public ControlPanelUI(Container contentPane) { this.contentPane = contentPane; }
+    public ControlPanelUI(JFrame frame) {
+        this.frame = frame;
+        this.contentPane = frame.getContentPane();
+    }
 
     public void setupTable() {
         addDebugAccounts();
 
-        tableOfUsers = new JTable(new CustomTable(newData, columnNames));
-        for (int i = 0; i < newData.size(); i++) {
-            Object[] accountData = new Object[] { accounts.get(i).getFirstName(),
-                    accounts.get(i).getLastName(),
-                    accounts.get(i).getCheckedOutBooks()};
-            newData.put(i, accountData);
+        data = new Object[accounts.size()][3];
+        tableOfUsers = new JTable(new CustomTable(data, columnNames));
+        for (int i = 0; i < data.length; i++) {
+            for (int r = 0; r < data[i].length; r++) {
+                data[i][0] = accounts.get(i).getFirstName();
+                data[i][1] = accounts.get(i).getLastName();
+                data[i][2] = accounts.get(i).getBooks();
+            }
         }
     }
 
     public void addDebugAccounts() {
-        accounts.add(new Account("Jacob", "Cuomo", "6162323562", new HashMap<>()));
-        accounts.add(new Account("Cool", "Dude", "232562623", new HashMap<>()));
-        accounts.add(new Account("Sleeping", "Widow", "23213425", new HashMap<>()));
-        accounts.add(new Account("Unknown", "Target", "98674203", new HashMap<>()));
+        accounts.add(new Account("Jacob", "Cuomo", "6162323562"));
+        accounts.add(new Account("Cool", "Dude", "232562623"));
+        accounts.add(new Account("Sleeping", "Widow", "23213425"));
+        accounts.add(new Account("Unknown", "Target", "98674203"));
     }
 
 
@@ -69,7 +76,7 @@ public class ControlPanelUI {
         statistics.addActionListener(new Statistics());
         JButton createNew = new JButton("CREATE NEW");
         createNew.setFont(new Font("Arial", Font.BOLD, 15));
-        createNew.addActionListener(new CreateNew());
+        createNew.addActionListener(new CreateNew(frame, tableOfUsers));
 
         newButtons.add(checkIn, gbc);
         newButtons.add(checkOut, gbc);
@@ -136,33 +143,4 @@ public class ControlPanelUI {
         bufferRegion.setOpaque(false);
         contentPane.add(right);
     }
-
-    /*
-    public class SearchBar extends MouseAdapter implements ActionListener {
-
-        public void mouseEntered(MouseEvent e) {
-            JTextField searchBar = (JTextField) e.getSource();
-
-            if (searchBar.getText().equalsIgnoreCase("SEARCH USERS")) {
-                searchBar.setText("");
-            }
-        }
-
-        public void mouseExited(MouseEvent e) {
-            JTextField searchBar = (JTextField) e.getSource();
-
-            if (searchBar.getText().equals("")) {
-                searchBar.setText("SEARCH USERS");
-            }
-        }
-
-        public void actionPerformed(ActionEvent e) {
-            JTextField searchBar = (JTextField) e.getSource();
-
-
-            if (!searchBar.getText().equals("")) {
-                new Go(tableOfUsers).actionPerformed(e);
-            }
-        }
-    }*/
 }

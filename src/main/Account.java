@@ -1,3 +1,6 @@
+package main;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -6,19 +9,19 @@ public class Account {
     private String firstName = "";
     private String lastName = "";
     private String phoneNumber = "";
-    private Map<Book, Integer> checkedOutBooksDue = new HashMap<>();
+    private int amountOfBooks;
 
-    public Account(String firstName, String lastName, String phoneNumber, HashMap<Book, Integer> bookData) {
+    public Account(String firstName, String lastName, String phoneNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
-        this.checkedOutBooksDue = bookData;
+        this.amountOfBooks = 0;
     }
 
     // Adding a book with this method is easy! Simply put
     // in the book and how many days in the future it is due!
-    public void addBook(Book book, int dueIn) {
-        checkedOutBooksDue.put(book, dueIn);
+    public void addBook(int amount) {
+        amountOfBooks += amount;
     }
 
     // Mutator Methods
@@ -26,7 +29,6 @@ public class Account {
         this.phoneNumber = phoneNumber;
         return this.phoneNumber;
     }
-
 
     // Accessor Methods
     public String getFirstName() { return firstName; }
@@ -37,13 +39,7 @@ public class Account {
         return phoneNumber;
     }
 
-    public Map<Book, Integer> getCheckedOutBooksDue() {
-        return checkedOutBooksDue;
-    }
-
-    public int getCheckedOutBooks() { return checkedOutBooksDue.size(); }
-
-    public void initializeAccounts() {
-
+    public Integer getBooks() {
+        return amountOfBooks;
     }
 }

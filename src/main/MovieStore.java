@@ -1,4 +1,4 @@
-/*
+package main;/*
     Manage video rentals and controls when videos are checked out,
     due to return, overdue fees and for added complexity create a summary
     of those accounts which are overdue for contact.
@@ -28,7 +28,7 @@ public class MovieStore extends JFrame {
         container.setLayout(new BorderLayout());
         container.setBackground(Color.DARK_GRAY);
 
-        ControlPanelUI controlPanel = new ControlPanelUI(container);
+        ControlPanelUI controlPanel = new ControlPanelUI(this);
         controlPanel.createLeftCP();
         controlPanel.createRightCP();
     }

@@ -1,12 +1,12 @@
-package actionlisteners;
+package main.actionlisteners;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class CheckOut implements ActionListener {
+public class Statistics implements ActionListener {
     public void actionPerformed(ActionEvent e) {
-        JButton checkOut = (JButton) e.getSource();
+        JButton statistics = (JButton) e.getSource();
 
 
     }
