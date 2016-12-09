@@ -6,6 +6,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ControlPanelUI {
 
@@ -13,35 +15,52 @@ public class ControlPanelUI {
     private JFrame frame;
     private Container contentPane;
     private ArrayList<Account> accounts = new ArrayList<>();
-    private String[] columnNames = {"First Name", "Last Name", "Books Out"};
+    private String[] columnNames = {"First Name", "Last Name", "Phone", "Books Out"};
     private Object[][] data;
+
+    // Button initalization to prevent null pointer exceptions when button listeners interact with table.
+    private JButton createNew = new JButton("CREATE NEW");
+    private JButton checkIn = new JButton("CHECK IN");
+    private JButton checkOut = new JButton("CHECK OUT");
 
     public ControlPanelUI(JFrame frame) {
         this.frame = frame;
         this.contentPane = frame.getContentPane();
     }
 
-    public void setupTable() {
-        addDebugAccounts();
+    public ControlPanelUI() {
+    }
 
-        data = new Object[accounts.size()][3];
+    public void setupTable() {
+        addAccounts();
+
+        data = new Object[accounts.size()][4];
         tableOfUsers = new JTable(new CustomTable(data, columnNames));
         for (int i = 0; i < data.length; i++) {
             for (int r = 0; r < data[i].length; r++) {
                 data[i][0] = accounts.get(i).getFirstName();
                 data[i][1] = accounts.get(i).getLastName();
-                data[i][2] = accounts.get(i).getBooks();
+                data[i][2] = accounts.get(i).getPhoneNumber();
+                data[i][3] = accounts.get(i).getBooks();
             }
+        }
+
+        tableOfUsers.repaint();
+        tableOfUsers.revalidate();
+    }
+
+    public void addAccounts() {
+        AccountInfo ai = new AccountInfo();
+        HashMap<Integer, String[]> accountInformation = ai.read();
+        for (Map.Entry<Integer, String[]> entry : accountInformation.entrySet()) {
+            String[] accountD = entry.getValue();
+            accounts.add(new Account(accountD[0], accountD[1], accountD[2], Integer.parseInt(accountD[3])));
         }
     }
 
-    public void addDebugAccounts() {
-        accounts.add(new Account("Jacob", "Cuomo", "6162323562"));
-        accounts.add(new Account("Cool", "Dude", "232562623"));
-        accounts.add(new Account("Sleeping", "Widow", "23213425"));
-        accounts.add(new Account("Unknown", "Target", "98674203"));
+    public ArrayList<Account> getAccounts() {
+        return this.accounts;
     }
-
 
     public void createLeftCP() {
         // The entire left panel, including border and color
@@ -65,18 +84,15 @@ public class ControlPanelUI {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.CENTER;
 
-        JButton checkIn = new JButton("CHECK IN");
+        //JButton checkIn = new JButton("CHECK IN");
         checkIn.setFont(new Font("Arial", Font.BOLD, 15));
-        checkIn.addActionListener(new CheckIn());
-        JButton checkOut = new JButton("CHECK OUT");
+        //JButton checkOut = new JButton("CHECK OUT");
         checkOut.setFont(new Font("Arial", Font.BOLD, 15));
-        checkOut.addActionListener(new CheckOut());
         JButton statistics = new JButton("STATISTICS");
         statistics.setFont(new Font("Arial", Font.BOLD, 15));
         statistics.addActionListener(new Statistics());
-        JButton createNew = new JButton("CREATE NEW");
+        //JButton createNew = new JButton("CREATE NEW");
         createNew.setFont(new Font("Arial", Font.BOLD, 15));
-        createNew.addActionListener(new CreateNew(frame, tableOfUsers));
 
         newButtons.add(checkIn, gbc);
         newButtons.add(checkOut, gbc);
@@ -142,5 +158,10 @@ public class ControlPanelUI {
         right.setOpaque(false);
         bufferRegion.setOpaque(false);
         contentPane.add(right);
+
+
+        createNew.addActionListener(new CreateNew(frame, tableOfUsers));
+        checkIn.addActionListener(new CheckIn(tableOfUsers, accounts));
+        checkOut.addActionListener(new CheckOut(tableOfUsers, accounts));
     }
 }

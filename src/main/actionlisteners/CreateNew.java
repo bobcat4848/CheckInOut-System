@@ -2,11 +2,13 @@ package main.actionlisteners;
 
 import main.Account;
 import main.AccountInfo;
+import main.ControlPanelUI;
+import main.CustomTable;
 
 import javax.swing.*;
+import javax.swing.table.AbstractTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 public class CreateNew implements ActionListener {
 
@@ -20,8 +22,6 @@ public class CreateNew implements ActionListener {
 
 
     public void actionPerformed(ActionEvent e) {
-        JButton createNew = (JButton) e.getSource();
-
         JTextField firstName = new JTextField();
         JTextField lastName = new JTextField();
         JTextField phoneNumber = new JTextField();
@@ -33,11 +33,14 @@ public class CreateNew implements ActionListener {
 
         int option = JOptionPane.showConfirmDialog(null, message, "Create New", JOptionPane.OK_CANCEL_OPTION);
         if (option == JOptionPane.OK_OPTION) {
-            Account user = new Account(firstName.getText(), lastName.getText(), phoneNumber.getText());
+            Account user = new Account(firstName.getText(), lastName.getText(), phoneNumber.getText(), 0);
 
-            String[] userInfo = {user.getFirstName(), user.getLastName(), user.getPhoneNumber()};
+            String[] userInfo = {user.getFirstName(), user.getLastName(), user.getPhoneNumber(), "0"};
             AccountInfo info = new AccountInfo();
             info.write(userInfo);
+
+            CustomTable custom = (CustomTable) table.getModel();
+            custom.addRow(userInfo);
         }
     }
 }

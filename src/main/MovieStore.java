@@ -7,6 +7,9 @@ package main;/*
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 
 public class MovieStore extends JFrame {
 
@@ -14,6 +17,22 @@ public class MovieStore extends JFrame {
     // MAIN METHOD
     public static void main(String[] args) {
         MovieStore ms = new MovieStore();
+
+        AccountInfo info = new AccountInfo();
+        ArrayList<Account> writeData = new ControlPanelUI().getAccounts();
+        ms.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                super.windowClosing(e);
+
+                for (int i = 0; i < writeData.size(); i++) {
+                    String[] accountInfo = {writeData.get(i).getFirstName(), writeData.get(i).getLastName(),
+                            writeData.get(i).getPhoneNumber(), Integer.toString(writeData.get(i).getBooks())};
+
+                    info.write(accountInfo);
+                }
+            }
+        });
 
         ms.setSize(800, 600);
         ms.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -11,17 +11,18 @@ public class Account {
     private String phoneNumber = "";
     private int amountOfBooks;
 
-    public Account(String firstName, String lastName, String phoneNumber) {
+    public Account(String firstName, String lastName, String phoneNumber, int amountOfBooks) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
-        this.amountOfBooks = 0;
+        this.amountOfBooks = amountOfBooks;
     }
 
     // Adding a book with this method is easy! Simply put
     // in the book and how many days in the future it is due!
-    public void addBook(int amount) {
+    public int addBook(int amount) {
         amountOfBooks += amount;
+        return amountOfBooks;
     }
 
     // Mutator Methods

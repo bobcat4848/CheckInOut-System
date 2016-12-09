@@ -30,11 +30,18 @@ public class CustomTable extends AbstractTableModel {
         fireTableCellUpdated(row, col);
     }
 
-    public void removeAllRows() {
-        for (int i = 0; i < data.length; i++) {
-            data[i] = null;
+    public void addRow(String[] data) {
+        Object[][] oldArray = this.data;
+        this.data = new Object[oldArray.length+1][4];
+
+        for (int i = 0; i < oldArray.length; i++) {
+            this.data[i] = oldArray[i];
         }
 
+        this.data[this.data.length-1][0] = data[0];
+        this.data[this.data.length-1][1] = data[1];
+        this.data[this.data.length-1][2] = data[2];
+        this.data[this.data.length-1][3] = data[3];
         fireTableDataChanged();
     }
 }
